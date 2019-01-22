@@ -9,4 +9,7 @@ public enum SequenceKeys {
 
     private String key;
 
+    public String getKey() {
+        return key;
+    }
 }

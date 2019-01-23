@@ -1,12 +1,13 @@
 package com.example.ednevnik.service.subject;
 
-import com.example.ednevnik.model.Subject;
+import com.example.ednevnik.model.subject.Subject;
+import com.example.ednevnik.model.subject.SubjectDto;
 
 import java.util.List;
 
 public interface SubjectService {
 
-    Subject saveSubject(Subject subject);
+    Subject saveSubject(SubjectDto subjectDto);
 
     List<Subject> getAll();
 

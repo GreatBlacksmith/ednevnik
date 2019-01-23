@@ -1,5 +1,7 @@
 package com.example.ednevnik.model;
 
+import com.example.ednevnik.model.student.Student;
+import com.example.ednevnik.model.subject.Subject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;

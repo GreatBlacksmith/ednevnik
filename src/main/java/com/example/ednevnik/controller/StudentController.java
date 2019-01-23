@@ -1,6 +1,7 @@
 package com.example.ednevnik.controller;
 
-import com.example.ednevnik.model.Student;
+import com.example.ednevnik.model.student.Student;
+import com.example.ednevnik.model.student.StudentDto;
 import com.example.ednevnik.service.student.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +34,9 @@ public class StudentController {
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<Student> insertStudent(@RequestBody Student student) {
+    public ResponseEntity<Student> insertStudent(@RequestBody StudentDto studentDto) {
 
-        Student studentSave = studentService.save(student);
+        Student studentSave = studentService.saveStudent(studentDto);
 
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(studentSave, status);

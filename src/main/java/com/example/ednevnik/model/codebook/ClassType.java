@@ -2,6 +2,8 @@ package com.example.ednevnik.model.codebook;
 
 import lombok.AllArgsConstructor;
 
+import java.util.Arrays;
+
 @AllArgsConstructor
 public enum ClassType {
     PRVI(1L, "Prvi razred."),
@@ -12,4 +14,8 @@ public enum ClassType {
     private Long code;
     private String description;
 
+    public static ClassType getByCode(Long code) {
+        return Arrays.stream(ClassType.values()).filter(type -> type != null && type.code.equals(code)).findFirst()
+                .orElse(null);
+    }
 }

@@ -1,6 +1,7 @@
-package com.example.ednevnik.model;
+package com.example.ednevnik.model.subject;
 
 import com.example.ednevnik.model.codebook.ClassType;
+import com.example.ednevnik.model.codebook.SubjectType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -13,28 +14,32 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+@Document
 @Data
 @NoArgsConstructor
-@Document
-public class Student {
+public class Subject {
 
     @Id
     @Setter(AccessLevel.NONE)
     @JsonIgnore
-    ObjectId id;
+    private ObjectId id;
 
-    Long studentId;
+    private Long subjectId;
 
-    String name;
-    String lastName;
-    Long studentNumber;
-    ClassType classType;
+    private String name;
+    private String description;
+
+    private SubjectType subjectType;
+    private List<ClassType> classTypes = new ArrayList<>();
 
     @CreatedDate
     public LocalDateTime createDate;
 
     @LastModifiedDate
     public LocalDateTime lastModifiedDate;
+
 
 }

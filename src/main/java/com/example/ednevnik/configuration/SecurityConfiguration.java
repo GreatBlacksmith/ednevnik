@@ -1,36 +1,58 @@
 package com.example.ednevnik.configuration;
 
+import com.example.ednevnik.security.JWTAuthenticationFilter;
+import com.example.ednevnik.security.JWTAuthorizationFilter;
+import com.example.ednevnik.service.user.UserDetailsServiceImpl;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//
-//        auth.inMemoryAuthentication()
-//                .withUser("user")
-//                .password("password")
-//                .roles("USER")
-//                .and()
-//                .withUser("admin")
-//                .password("admin")
-//                .roles("USER", "ADMIN");
-//    }
+    private final ApplicationProperties applicationProperties;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public SecurityConfiguration(ApplicationProperties applicationProperties, UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.applicationProperties = applicationProperties;
+        this.userDetailsService = userDetailsService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
+
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/", "/index").permitAll()
-                .antMatchers("/student/insert").permitAll()
-                .antMatchers("/user/**").hasRole("USER")
+        http.cors().and().csrf().disable().authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/users/sign-up").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/login").failureUrl("/login-error");
+                .addFilter(new JWTAuthenticationFilter(authenticationManager(), applicationProperties))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), applicationProperties))
+                // this disables session creation on Spring Security
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
     }
 }

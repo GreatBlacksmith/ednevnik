@@ -43,13 +43,21 @@ public class SubjectServiceImpl extends BaseService implements SubjectService {
 
     @Override
     public List<Subject> getAll() {
-        LOGGER.info("Calling getAll() for Subjects");
+        LOGGER.info("Called getAll() for Subjects");
         return subjectRepository.findAll();
     }
 
     @Override
+    public List<SubjectDto> getAllByClassType(ClassType classType) {
+        LOGGER.info("Called getAllByClassType() for Subjects with classType: {}", classType);
+        List<Subject> subjects = subjectRepository.findAllByClassTypesContains(classType);
+
+        return subjects.stream().map(subject -> mapEntityToDTO(subject, SubjectDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
     public Subject findOneById(Long subjectId) {
-        LOGGER.info("Calling findOneById() for subject with id: {}", subjectId);
+        LOGGER.info("Called findOneById() for subject with id: {}", subjectId);
         return subjectRepository.findOneBySubjectId(subjectId);
     }
 }

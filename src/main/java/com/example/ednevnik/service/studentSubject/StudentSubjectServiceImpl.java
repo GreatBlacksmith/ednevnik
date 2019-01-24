@@ -1,20 +1,64 @@
 package com.example.ednevnik.service.studentSubject;
 
 import com.example.ednevnik.model.StudentSubject;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import com.example.ednevnik.model.student.Student;
+import com.example.ednevnik.model.subject.Subject;
+import com.example.ednevnik.model.subject.SubjectDto;
+import com.example.ednevnik.repository.StudentSubjectRepository;
+import com.example.ednevnik.service.BaseService;
+import com.example.ednevnik.service.student.StudentService;
+import com.example.ednevnik.service.subject.SubjectService;
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
-public class StudentSubjectServiceImpl implements StudentSubjectService {
+public class StudentSubjectServiceImpl extends BaseService implements StudentSubjectService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StudentSubjectServiceImpl.class);
 
-    private final MongoTemplate mongoTemplate;
+    private final StudentSubjectRepository repository;
+    private final StudentService studentService;
+    private final SubjectService subjectService;
 
-    public StudentSubjectServiceImpl(MongoTemplate mongoTemplate) {
-        this.mongoTemplate = mongoTemplate;
+    public StudentSubjectServiceImpl(ModelMapper modelMapper, StudentSubjectRepository repository, StudentService studentService, SubjectService subjectService) {
+        super(modelMapper);
+        this.repository = repository;
+        this.studentService = studentService;
+        this.subjectService = subjectService;
+    }
+
+    public StudentSubject save(StudentSubject studentSubject) {
+        return repository.save(studentSubject);
+    }
+
+
+    @Override
+    public void saveSubjectsToStudent(List<Long> subjectIds, Long studentId) {
+        LOGGER.info("Called saveSubjectsToStudent for studentId: {}, and subjectIds: {}", studentId, subjectIds);
+        Student student = studentService.findOneByStudentId(studentId);
+
+        subjectIds.forEach(aLong -> {
+            Subject subject = subjectService.findOneById(aLong);
+            StudentSubject studentSubject = new StudentSubject();
+            studentSubject.setStudent(student);
+            studentSubject.setSubject(subject);
+
+            repository.save(studentSubject);
+        });
     }
 
     @Override
-    public StudentSubject save(StudentSubject studentSubject) {
-        return mongoTemplate.save(studentSubject);
+    public List<SubjectDto> getSubjectsForStudent(Long studentId) {
+        LOGGER.info("Called getSubjectsForStudent() with studentId: {}", studentId);
+
+        Student student = studentService.findOneByStudentId(studentId);
+
+        List<StudentSubject> allByStudentId = repository.findAllByStudent_Id(student.getId());
+
+        return allByStudentId.stream().map(studentSubject -> mapEntityToDTO(studentSubject.getSubject(), SubjectDto.class)).collect(Collectors.toList());
     }
 }

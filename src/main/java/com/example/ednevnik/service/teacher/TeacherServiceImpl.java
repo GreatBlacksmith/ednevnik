@@ -44,7 +44,7 @@ public class TeacherServiceImpl implements TeacherService {
 
         TeacherSubject teacherSubject = new TeacherSubject();
 
-        teacherSubject.setTeacher(teacher);
+        teacherSubject.setTeacher(teachersaved);
         teacherSubject.setSubject(subjectService.findOneById(1L));
 
         teacherSubjectRepository.save(teacherSubject);

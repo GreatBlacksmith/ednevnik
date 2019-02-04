@@ -1,28 +1,29 @@
 package com.example.ednevnik.model;
 
-import com.example.ednevnik.model.codebook.ClassType;
+import com.example.ednevnik.model.student.Student;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Document
 @Data
 @NoArgsConstructor
-public class Class {
+public class ClassStudents {
 
     @Id
     @Setter(AccessLevel.NONE)
     private ObjectId id;
 
-    private Long classId;
+    @DBRef
+    private Class aClass;
 
-    private String name;
-
-    private ClassType classType;
-
-    private Long teacherNumber;
+    @DBRef
+    private List<Student> students;
 }

@@ -49,7 +49,7 @@ public class StudentController {
         return new ResponseEntity<>(studentSave, status);
     }
 
-    @GetMapping("/{id}/add-subjects")
+    @PostMapping("/{id}/add-subjects")
     public ResponseEntity<Boolean> addSubjectsToStudent(@PathVariable(value = "id") Long studentId,
                                                         @RequestParam(value = "subjects") List<Long> subjects) {
 

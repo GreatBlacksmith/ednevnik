@@ -1,6 +1,5 @@
-package com.example.ednevnik.model;
+package com.example.ednevnik.model.teacher;
 
-import com.example.ednevnik.model.student.Student;
 import com.example.ednevnik.model.subject.Subject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
@@ -12,30 +11,19 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@Document
 @Data
 @NoArgsConstructor
-@Document
-public class StudentSubject {
+public class TeacherSubject {
 
     @Id
     @Setter(AccessLevel.NONE)
     @JsonIgnore
     ObjectId id;
 
-    Long studentSubjectId;
-
-    Long teacherNumber;
-
     @DBRef
-    Student student;
+    Teacher teacher;
 
     @DBRef
     Subject subject;
-
-    List<Integer> grades = new ArrayList<>();
-
-    Double average;
 }

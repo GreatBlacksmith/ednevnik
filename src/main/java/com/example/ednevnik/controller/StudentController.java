@@ -62,7 +62,6 @@ public class StudentController {
     @GetMapping("/{id}/available-subjects")
     public ResponseEntity<List<SubjectDto>> getAvailableSubjectsForStudent(@PathVariable(value = "id") Long studentId) {
 
-
         Student student = studentService.findOneByStudentId(studentId);
 
         List<SubjectDto> subjects = subjectService.getAllByClassType(student.getClassType());
@@ -73,7 +72,6 @@ public class StudentController {
 
     @GetMapping("/{id}/subjects")
     public ResponseEntity<List<SubjectDto>> getSubjectsForStudent(@PathVariable(value = "id") Long studentId) {
-
 
         List<SubjectDto> subjectsForStudent = studentSubjectService.getSubjectsForStudent(studentId);
 

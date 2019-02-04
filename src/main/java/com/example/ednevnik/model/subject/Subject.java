@@ -2,7 +2,6 @@ package com.example.ednevnik.model.subject;
 
 import com.example.ednevnik.model.codebook.ClassType;
 import com.example.ednevnik.model.codebook.SubjectType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +12,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +20,10 @@ import java.util.List;
 @Document
 @Data
 @NoArgsConstructor
-public class Subject {
+public class Subject implements Serializable {
 
     @Id
     @Setter(AccessLevel.NONE)
-    @JsonIgnore
     private ObjectId id;
 
     private Long subjectId;

@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum SequenceKeys {
     SUBJECT("subject"),
-    STUDENT("student");
-
+    STUDENT("student"),
+    TEACHER("teacher");
     private String key;
 
     public String getKey() {

@@ -1,8 +1,6 @@
 package com.example.ednevnik.model.student;
 
-import com.example.ednevnik.model.StudentSubject;
 import com.example.ednevnik.model.codebook.ClassType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,17 +11,16 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @Document
-public class Student {
+public class Student implements Serializable {
 
     @Id
     @Setter(AccessLevel.NONE)
-    @JsonIgnore
     ObjectId id;
 
     Long studentId;
@@ -33,7 +30,7 @@ public class Student {
     Long studentNumber;
     ClassType classType;
 
-    List<StudentSubject> subjects;
+    //List<StudentSubject> subjects;
 
     @CreatedDate
     public LocalDateTime createDate;

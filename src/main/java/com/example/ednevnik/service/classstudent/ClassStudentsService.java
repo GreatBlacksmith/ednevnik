@@ -8,4 +8,6 @@ public interface ClassStudentsService {
     ClassStudents getStudentForClassById(Long classId);
 
     void addStudentsToClass(Class aClass);
+
+    ClassStudents addStudentToCass(Long classId, Long studentId) throws Exception;
 }

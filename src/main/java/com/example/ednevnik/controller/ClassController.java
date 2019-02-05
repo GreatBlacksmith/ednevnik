@@ -6,10 +6,7 @@ import com.example.ednevnik.service.aclass.ClassService;
 import com.example.ednevnik.service.classstudent.ClassStudentsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/class")
@@ -38,9 +35,28 @@ public class ClassController {
         return new ResponseEntity<>(classStudents, status);
     }
 
+    @PostMapping("/add")
+    public ResponseEntity<ClassStudents> addStudentToClass(@RequestParam(value = "id") String classId, @RequestBody String studentId) {
 
-    @GetMapping("/insert")
-    public void create() {
-        classService.insertNewClass();
+        if (classId == null) {
+            HttpStatus status = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<>(status);
+        }
+        ClassStudents c;
+        try {
+            c = classStudentsService.addStudentToCass(Long.valueOf(classId), Long.valueOf(studentId));
+        } catch (Exception e) {
+            HttpStatus status = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<>(status);
+        }
+
+        HttpStatus status = HttpStatus.OK;
+        return new ResponseEntity<>(c, status);
     }
+
+
+//    @GetMapping("/insert")
+//    public void create() {
+//        classService.insertNewClass();
+//    }
 }

@@ -6,5 +6,5 @@ public interface ClassService {
 
     Class getClassByClassId(Long classId);
 
-    void insertNewClass();
+    // void insertNewClass();
 }

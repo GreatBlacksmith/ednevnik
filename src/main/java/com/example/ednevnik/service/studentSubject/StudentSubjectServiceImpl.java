@@ -61,4 +61,19 @@ public class StudentSubjectServiceImpl extends BaseService implements StudentSub
 
         return allByStudentId.stream().map(studentSubject -> mapEntityToDTO(studentSubject.getSubject(), SubjectDto.class)).collect(Collectors.toList());
     }
+
+    @Override
+    public List<SubjectDto> getAvailableSubjectsForStudent(Long studentId) {
+        Student student = studentService.findOneByStudentId(studentId);
+        List<StudentSubject> allByStudentId = repository.findAllByStudent_Id(student.getId());
+
+        List<Long> subjectIdsForStudent = allByStudentId.stream().map(studentSubject -> studentSubject.getSubject().getSubjectId()).collect(Collectors.toList());
+
+        List<SubjectDto> allByClassType = subjectService.getAllByClassType(student.getClassType());
+
+        List<SubjectDto> availableSubjectsForStudent = allByClassType.stream().filter(subjectDto -> !subjectIdsForStudent.contains(subjectDto.getSubjectId())).collect(Collectors.toList());
+
+        return availableSubjectsForStudent;
+
+    }
 }

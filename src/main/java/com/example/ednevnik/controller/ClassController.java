@@ -37,20 +37,17 @@ public class ClassController {
 
     @PostMapping("/add")
     public ResponseEntity<ClassStudents> addStudentToClass(@RequestParam(value = "id") String classId, @RequestBody String studentId) {
-
+        HttpStatus status = HttpStatus.OK;
+        ClassStudents c = null;
         if (classId == null) {
-            HttpStatus status = HttpStatus.BAD_REQUEST;
-            return new ResponseEntity<>(status);
+            status = HttpStatus.BAD_REQUEST;
         }
-        ClassStudents c;
         try {
             c = classStudentsService.addStudentToCass(Long.valueOf(classId), Long.valueOf(studentId));
         } catch (Exception e) {
-            HttpStatus status = HttpStatus.BAD_REQUEST;
+            status = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(status);
         }
-
-        HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(c, status);
     }
 

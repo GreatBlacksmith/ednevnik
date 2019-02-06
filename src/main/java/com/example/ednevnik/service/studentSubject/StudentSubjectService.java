@@ -10,4 +10,6 @@ public interface StudentSubjectService {
 
     List<SubjectDto> getSubjectsForStudent(Long studentId);
 
+    List<SubjectDto> getAvailableSubjectsForStudent(Long studentId);
+
 }

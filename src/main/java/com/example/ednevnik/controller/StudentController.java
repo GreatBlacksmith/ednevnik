@@ -62,12 +62,10 @@ public class StudentController {
     @GetMapping("/{id}/available-subjects")
     public ResponseEntity<List<SubjectDto>> getAvailableSubjectsForStudent(@PathVariable(value = "id") Long studentId) {
 
-        Student student = studentService.findOneByStudentId(studentId);
-
-        List<SubjectDto> subjects = subjectService.getAllByClassType(student.getClassType());
+        List<SubjectDto> availableSubjectsForStudent = studentSubjectService.getAvailableSubjectsForStudent(studentId);
 
         HttpStatus status = HttpStatus.OK;
-        return new ResponseEntity<>(subjects, status);
+        return new ResponseEntity<>(availableSubjectsForStudent, status);
     }
 
     @GetMapping("/{id}/subjects")

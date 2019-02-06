@@ -36,6 +36,12 @@ public class StudentServiceImpl extends BaseService implements StudentService {
     }
 
     @Override
+    public Student saveStudent(Student student) {
+        return studentRepository.save(student);
+    }
+
+
+    @Override
     public List<Student> getAllStudents() {
         LOGGER.info("Called getAllStudents()");
         return studentRepository.findAll();

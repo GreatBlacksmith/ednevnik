@@ -1,6 +1,7 @@
 package com.example.ednevnik.model;
 
 import com.example.ednevnik.model.student.Student;
+import com.example.ednevnik.model.subject.Subject;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 @Document
 @Data
 @NoArgsConstructor
-public class ClassStudents {
+public class Classes {
 
     @Id
     @Setter(AccessLevel.NONE)
@@ -26,4 +27,7 @@ public class ClassStudents {
 
     @DBRef
     private List<Student> students;
+
+    @DBRef
+    private List<Subject> subjects;
 }

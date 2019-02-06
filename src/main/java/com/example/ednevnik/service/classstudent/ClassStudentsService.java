@@ -1,13 +1,15 @@
 package com.example.ednevnik.service.classstudent;
 
 import com.example.ednevnik.model.Class;
-import com.example.ednevnik.model.ClassStudents;
+import com.example.ednevnik.model.Classes;
 
 public interface ClassStudentsService {
 
-    ClassStudents getStudentForClassById(Long classId);
+    Classes getStudentForClassById(Long classId);
 
     void addStudentsToClass(Class aClass);
 
-    ClassStudents addStudentToCass(Long classId, Long studentId) throws Exception;
+    Classes addStudentByIdToClass(Long classId, Long studentId) throws Exception;
+
+    Classes addSubjectByIdToClass(Long classId, Long subjectId) throws Exception;
 }

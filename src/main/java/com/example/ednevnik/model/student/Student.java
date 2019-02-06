@@ -1,5 +1,6 @@
 package com.example.ednevnik.model.student;
 
+import com.example.ednevnik.model.Class;
 import com.example.ednevnik.model.codebook.ClassType;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -9,6 +10,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -30,6 +32,8 @@ public class Student implements Serializable {
     Long studentNumber;
     ClassType classType;
 
+    @DBRef
+    Class aCLass;
     //List<StudentSubject> subjects;
 
     @CreatedDate

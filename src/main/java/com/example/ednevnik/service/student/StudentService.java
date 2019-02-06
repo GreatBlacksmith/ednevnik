@@ -9,6 +9,8 @@ public interface StudentService {
 
     Student saveStudent(StudentDto studentDto);
 
+    Student saveStudent(Student student);
+
     List<Student> getAllStudents();
 
     Student findOneByStudentId(Long studentId);

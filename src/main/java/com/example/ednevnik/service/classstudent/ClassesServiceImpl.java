@@ -11,16 +11,17 @@ import com.example.ednevnik.service.subject.SubjectService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
-public class ClassStudentsServiceImpl implements ClassStudentsService {
+public class ClassesServiceImpl implements ClassesService {
 
     private final ClassesRepository repository;
     private final StudentService studentService;
     private final SubjectService subjectService;
     private final ClassService classService;
 
-    public ClassStudentsServiceImpl(ClassesRepository repository, StudentService studentService, SubjectService subjectService, ClassService classService) {
+    public ClassesServiceImpl(ClassesRepository repository, StudentService studentService, SubjectService subjectService, ClassService classService) {
         this.repository = repository;
         this.studentService = studentService;
         this.subjectService = subjectService;
@@ -28,9 +29,15 @@ public class ClassStudentsServiceImpl implements ClassStudentsService {
     }
 
     @Override
-    public Classes getStudentForClassById(Long classId) {
+    public List<Student> getStudentsForClassById(Long classId) {
         Class aClass = classService.getClassByClassId(classId);
-        return repository.findOneByAClass(aClass);
+        return repository.findOneByAClass(aClass).getStudents();
+    }
+
+    @Override
+    public List<Subject> getSubjectsForClassById(Long classId) {
+        Class aClass = classService.getClassByClassId(classId);
+        return repository.findOneByAClass(aClass).getSubjects();
     }
 
     @Override

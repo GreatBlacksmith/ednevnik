@@ -2,22 +2,26 @@ package com.example.ednevnik.controller;
 
 import com.example.ednevnik.model.Class;
 import com.example.ednevnik.model.Classes;
+import com.example.ednevnik.model.student.Student;
+import com.example.ednevnik.model.subject.Subject;
 import com.example.ednevnik.service.aclass.ClassService;
-import com.example.ednevnik.service.classstudent.ClassStudentsService;
+import com.example.ednevnik.service.classstudent.ClassesService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/class")
 public class ClassController {
 
     private final ClassService classService;
-    private final ClassStudentsService classStudentsService;
+    private final ClassesService classesService;
 
-    public ClassController(ClassService classService, ClassStudentsService classStudentsService) {
+    public ClassController(ClassService classService, ClassesService classesService) {
         this.classService = classService;
-        this.classStudentsService = classStudentsService;
+        this.classesService = classesService;
     }
 
     @GetMapping("/{id}")
@@ -28,14 +32,23 @@ public class ClassController {
     }
 
     @GetMapping("/{id}/students")
-    public ResponseEntity<Classes> getStudentsForClass(@PathVariable(value = "id") Long classId) {
+    public ResponseEntity<List<Student>> getStudentsForClass(@PathVariable(value = "id") Long classId) {
 
-        Classes classes = classStudentsService.getStudentForClassById(classId);
+        List<Student> studentsForClass = classesService.getStudentsForClassById(classId);
         HttpStatus status = HttpStatus.OK;
-        return new ResponseEntity<>(classes, status);
+        return new ResponseEntity<>(studentsForClass, status);
+    }
+
+    @GetMapping("/{id}/subjects")
+    public ResponseEntity<List<Subject>> getSubjectsForClass(@PathVariable(value = "id") Long classId) {
+
+        List<Subject> subjectsForClass = classesService.getSubjectsForClassById(classId);
+        HttpStatus status = HttpStatus.OK;
+        return new ResponseEntity<>(subjectsForClass, status);
     }
 
     @PostMapping("/add-student")
+
     public ResponseEntity<Classes> addStudentToClass(@RequestParam(value = "id") String classId, @RequestBody String studentId) {
         HttpStatus status = HttpStatus.OK;
         Classes c = null;
@@ -43,7 +56,7 @@ public class ClassController {
             status = HttpStatus.BAD_REQUEST;
         }
         try {
-            c = classStudentsService.addStudentByIdToClass(Long.valueOf(classId), Long.valueOf(studentId));
+            c = classesService.addStudentByIdToClass(Long.valueOf(classId), Long.valueOf(studentId));
         } catch (Exception e) {
             status = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(status);
@@ -59,7 +72,7 @@ public class ClassController {
             status = HttpStatus.BAD_REQUEST;
         }
         try {
-            c = classStudentsService.addSubjectByIdToClass(Long.valueOf(classId), Long.valueOf(subjectId));
+            c = classesService.addSubjectByIdToClass(Long.valueOf(classId), Long.valueOf(subjectId));
         } catch (Exception e) {
             status = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(status);

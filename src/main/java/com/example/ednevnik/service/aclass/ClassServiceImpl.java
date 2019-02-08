@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class ClassServiceImpl implements ClassService {
 
     private final ClassRepository repository;
-    //    private final ClassStudentsService classStudentsService;
+    //    private final ClassesService classStudentsService;
     private final CounterSequenceService sequenceService;
 
     public ClassServiceImpl(ClassRepository repository, CounterSequenceService sequenceService) {

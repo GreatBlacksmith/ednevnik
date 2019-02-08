@@ -2,10 +2,16 @@ package com.example.ednevnik.service.classstudent;
 
 import com.example.ednevnik.model.Class;
 import com.example.ednevnik.model.Classes;
+import com.example.ednevnik.model.student.Student;
+import com.example.ednevnik.model.subject.Subject;
 
-public interface ClassStudentsService {
+import java.util.List;
 
-    Classes getStudentForClassById(Long classId);
+public interface ClassesService {
+
+    List<Student> getStudentsForClassById(Long classId);
+
+    List<Subject> getSubjectsForClassById(Long classId);
 
     void addStudentsToClass(Class aClass);
 

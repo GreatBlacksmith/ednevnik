@@ -1,5 +1,6 @@
-package com.example.ednevnik.model;
+package com.example.ednevnik.model.classes;
 
+import com.example.ednevnik.model.aClass.Class;
 import com.example.ednevnik.model.student.Student;
 import com.example.ednevnik.model.subject.Subject;
 import lombok.AccessLevel;

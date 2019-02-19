@@ -1,6 +1,6 @@
 package com.example.ednevnik.repository;
 
-import com.example.ednevnik.model.Class;
+import com.example.ednevnik.model.aClass.Class;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

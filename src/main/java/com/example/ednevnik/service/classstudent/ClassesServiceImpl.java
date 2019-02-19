@@ -1,7 +1,7 @@
 package com.example.ednevnik.service.classstudent;
 
-import com.example.ednevnik.model.Class;
-import com.example.ednevnik.model.Classes;
+import com.example.ednevnik.model.aClass.Class;
+import com.example.ednevnik.model.classes.Classes;
 import com.example.ednevnik.model.student.Student;
 import com.example.ednevnik.model.subject.Subject;
 import com.example.ednevnik.repository.ClassesRepository;
@@ -62,7 +62,7 @@ public class ClassesServiceImpl implements ClassesService {
         Classes classes = repository.findOneByAClass(aClass);
 
         if (classes.getStudents() == null) {
-            classes.setSubjects(new ArrayList<>());
+            classes.setStudents(new ArrayList<>());
         }
         classes.getStudents().add(student);
 

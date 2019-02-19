@@ -1,4 +1,4 @@
-package com.example.ednevnik.model;
+package com.example.ednevnik.model.aClass;
 
 import com.example.ednevnik.model.codebook.ClassType;
 import lombok.AccessLevel;

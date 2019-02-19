@@ -1,18 +1,24 @@
 package com.example.ednevnik.service.aclass;
 
-import com.example.ednevnik.model.Class;
+import com.example.ednevnik.model.aClass.Class;
+import com.example.ednevnik.model.aClass.ClassDto;
+import com.example.ednevnik.model.codebook.ClassType;
 import com.example.ednevnik.repository.ClassRepository;
+import com.example.ednevnik.service.BaseService;
 import com.example.ednevnik.service.counterSequence.CounterSequenceService;
+import com.example.ednevnik.service.counterSequence.SequenceKeys;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ClassServiceImpl implements ClassService {
+public class ClassServiceImpl extends BaseService implements ClassService {
 
     private final ClassRepository repository;
     //    private final ClassesService classStudentsService;
     private final CounterSequenceService sequenceService;
 
-    public ClassServiceImpl(ClassRepository repository, CounterSequenceService sequenceService) {
+    public ClassServiceImpl(ModelMapper modelMapper, ClassRepository repository, CounterSequenceService sequenceService) {
+        super(modelMapper);
         this.repository = repository;
         this.sequenceService = sequenceService;
     }
@@ -20,6 +26,16 @@ public class ClassServiceImpl implements ClassService {
     @Override
     public Class getClassByClassId(Long classId) {
         return repository.findFirstByClassId(classId);
+    }
+
+    @Override
+    public Class saveNewClass(ClassDto classDto) {
+
+        Class aClass = mapEntityToDTO(classDto, Class.class);
+        aClass.setClassId(sequenceService.getNextSequenceValue(SequenceKeys.CLASS.getKey()));
+        aClass.setClassType(ClassType.getByCode(classDto.getClassTypeId()));
+
+        return repository.save(aClass);
     }
 
 //    @Override

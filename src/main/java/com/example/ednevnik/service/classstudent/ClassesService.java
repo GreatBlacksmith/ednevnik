@@ -1,7 +1,7 @@
 package com.example.ednevnik.service.classstudent;
 
-import com.example.ednevnik.model.Class;
-import com.example.ednevnik.model.Classes;
+import com.example.ednevnik.model.aClass.Class;
+import com.example.ednevnik.model.classes.Classes;
 import com.example.ednevnik.model.student.Student;
 import com.example.ednevnik.model.subject.Subject;
 

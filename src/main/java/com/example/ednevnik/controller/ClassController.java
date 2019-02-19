@@ -1,7 +1,8 @@
 package com.example.ednevnik.controller;
 
-import com.example.ednevnik.model.Class;
-import com.example.ednevnik.model.Classes;
+import com.example.ednevnik.model.aClass.Class;
+import com.example.ednevnik.model.aClass.ClassDto;
+import com.example.ednevnik.model.classes.Classes;
 import com.example.ednevnik.model.student.Student;
 import com.example.ednevnik.model.subject.Subject;
 import com.example.ednevnik.service.aclass.ClassService;
@@ -48,7 +49,6 @@ public class ClassController {
     }
 
     @PostMapping("/add-student")
-
     public ResponseEntity<Classes> addStudentToClass(@RequestParam(value = "id") String classId, @RequestBody String studentId) {
         HttpStatus status = HttpStatus.OK;
         Classes c = null;
@@ -80,8 +80,11 @@ public class ClassController {
         return new ResponseEntity<>(c, status);
     }
 
-//    @GetMapping("/insert")
-//    public void create() {
-//        classService.insertNewClass();
-//    }
+    @PostMapping("/insert")
+    public ResponseEntity<Class> create(@RequestBody ClassDto classDto) {
+        Class aClass = classService.saveNewClass(classDto);
+
+        HttpStatus status = HttpStatus.OK;
+        return new ResponseEntity<>(aClass, status);
+    }
 }

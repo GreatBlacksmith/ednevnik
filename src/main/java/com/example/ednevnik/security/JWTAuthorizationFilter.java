@@ -3,6 +3,8 @@ package com.example.ednevnik.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.ednevnik.configuration.ApplicationProperties;
+import com.example.ednevnik.model.teacher.Teacher;
+import com.example.ednevnik.service.teacher.TeacherService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,10 +20,12 @@ import java.util.ArrayList;
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     private final ApplicationProperties appProperties;
+    private final TeacherService teacherService;
 
-    public JWTAuthorizationFilter(AuthenticationManager authManager, ApplicationProperties appProperties) {
+    public JWTAuthorizationFilter(AuthenticationManager authManager, ApplicationProperties appProperties, TeacherService teacherService) {
         super(authManager);
         this.appProperties = appProperties;
+        this.teacherService = teacherService;
     }
 
     @Override
@@ -51,7 +55,9 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                     .getSubject();
 
             if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+
+                Teacher loggedInUser = teacherService.getTeacherByUsername(user);
+                return new UsernamePasswordAuthenticationToken(loggedInUser, null, new ArrayList<>());
             }
             return null;
         }

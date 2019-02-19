@@ -6,5 +6,7 @@ public interface TeacherService {
 
     Teacher getTeacherById(Long teacherNumber);
 
+    Teacher getTeacherByUsername(String username);
+
     void insertTeacher();
 }

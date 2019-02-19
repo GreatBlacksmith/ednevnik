@@ -7,4 +7,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface TeacherRepository extends MongoRepository<Teacher, ObjectId> {
 
     Teacher findOneByTeacherNumber(Long TeacherNumber);
+
+    Teacher findFirstByUsername(String username);
 }

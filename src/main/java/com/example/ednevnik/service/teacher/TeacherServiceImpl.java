@@ -49,4 +49,9 @@ public class TeacherServiceImpl implements TeacherService {
 
         teacherSubjectRepository.save(teacherSubject);
     }
+
+    @Override
+    public Teacher getTeacherByUsername(String username) {
+        return teacherRepository.findFirstByUsername(username);
+    }
 }

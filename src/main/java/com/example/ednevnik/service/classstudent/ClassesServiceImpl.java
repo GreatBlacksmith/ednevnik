@@ -5,7 +5,6 @@ import com.example.ednevnik.model.classes.Classes;
 import com.example.ednevnik.model.student.Student;
 import com.example.ednevnik.model.subject.Subject;
 import com.example.ednevnik.repository.ClassesRepository;
-import com.example.ednevnik.service.aclass.ClassService;
 import com.example.ednevnik.service.student.StudentService;
 import com.example.ednevnik.service.subject.SubjectService;
 import org.springframework.stereotype.Service;
@@ -19,24 +18,20 @@ public class ClassesServiceImpl implements ClassesService {
     private final ClassesRepository repository;
     private final StudentService studentService;
     private final SubjectService subjectService;
-    private final ClassService classService;
 
-    public ClassesServiceImpl(ClassesRepository repository, StudentService studentService, SubjectService subjectService, ClassService classService) {
+    public ClassesServiceImpl(ClassesRepository repository, StudentService studentService, SubjectService subjectService) {
         this.repository = repository;
         this.studentService = studentService;
         this.subjectService = subjectService;
-        this.classService = classService;
     }
 
     @Override
-    public List<Student> getStudentsForClassById(Long classId) {
-        Class aClass = classService.getClassByClassId(classId);
+    public List<Student> getStudentsForClassById(Class aClass) {
         return repository.findOneByAClass(aClass).getStudents();
     }
 
     @Override
-    public List<Subject> getSubjectsForClassById(Long classId) {
-        Class aClass = classService.getClassByClassId(classId);
+    public List<Subject> getSubjectsForClassById(Class aClass) {
         return repository.findOneByAClass(aClass).getSubjects();
     }
 
@@ -50,9 +45,8 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public Classes addStudentByIdToClass(Long classId, Long studentId) throws Exception {
+    public Classes addStudentByIdToClass(Class aClass, Long studentId) throws Exception {
         Student student = studentService.findOneByStudentId(studentId);
-        Class aClass = classService.getClassByClassId(classId);
         if (aClass == null || student == null) {
             throw new Exception("Dodat custom exception");
         }
@@ -70,8 +64,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public Classes addSubjectByIdToClass(Long classId, Long subjectId) throws Exception {
-        Class aClass = classService.getClassByClassId(classId);
+    public Classes addSubjectByIdToClass(Class aClass, Long subjectId) throws Exception {
         Subject subject = subjectService.findOneById(subjectId);
 
         if (aClass == null || subject == null) {
@@ -87,5 +80,10 @@ public class ClassesServiceImpl implements ClassesService {
         return repository.save(classes);
     }
 
-
+    @Override
+    public Classes saveNewClassesForClass(Class aClass) {
+        Classes classes = new Classes();
+        classes.setAClass(aClass);
+        return repository.save(classes);
+    }
 }

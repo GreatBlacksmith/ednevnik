@@ -9,13 +9,15 @@ import java.util.List;
 
 public interface ClassesService {
 
-    List<Student> getStudentsForClassById(Long classId);
+    List<Student> getStudentsForClassById(Class aClass);
 
-    List<Subject> getSubjectsForClassById(Long classId);
+    List<Subject> getSubjectsForClassById(Class aClass);
 
     void addStudentsToClass(Class aClass);
 
-    Classes addStudentByIdToClass(Long classId, Long studentId) throws Exception;
+    Classes addStudentByIdToClass(Class aClass, Long studentId) throws Exception;
 
-    Classes addSubjectByIdToClass(Long classId, Long subjectId) throws Exception;
+    Classes addSubjectByIdToClass(Class aClass, Long subjectId) throws Exception;
+
+    Classes saveNewClassesForClass(Class aClass);
 }

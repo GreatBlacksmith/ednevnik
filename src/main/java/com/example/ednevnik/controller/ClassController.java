@@ -34,16 +34,22 @@ public class ClassController {
 
     @GetMapping("/{id}/students")
     public ResponseEntity<List<Student>> getStudentsForClass(@PathVariable(value = "id") Long classId) {
-
-        List<Student> studentsForClass = classesService.getStudentsForClassById(classId);
+        Class aClass = null;
+        if (classId != null) {
+            aClass = classService.getClassByClassId(classId);
+        }
+        List<Student> studentsForClass = classesService.getStudentsForClassById(aClass);
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(studentsForClass, status);
     }
 
     @GetMapping("/{id}/subjects")
     public ResponseEntity<List<Subject>> getSubjectsForClass(@PathVariable(value = "id") Long classId) {
-
-        List<Subject> subjectsForClass = classesService.getSubjectsForClassById(classId);
+        Class aClass = null;
+        if (classId != null) {
+            aClass = classService.getClassByClassId(classId);
+        }
+        List<Subject> subjectsForClass = classesService.getSubjectsForClassById(aClass);
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(subjectsForClass, status);
     }
@@ -51,12 +57,16 @@ public class ClassController {
     @PostMapping("/add-student")
     public ResponseEntity<Classes> addStudentToClass(@RequestParam(value = "id") String classId, @RequestBody String studentId) {
         HttpStatus status = HttpStatus.OK;
-        Classes c = null;
+        Classes c;
         if (classId == null) {
             status = HttpStatus.BAD_REQUEST;
         }
         try {
-            c = classesService.addStudentByIdToClass(Long.valueOf(classId), Long.valueOf(studentId));
+            Class aClass = null;
+            if (classId != null) {
+                aClass = classService.getClassByClassId(Long.valueOf(classId));
+            }
+            c = classesService.addStudentByIdToClass(aClass, Long.valueOf(studentId));
         } catch (Exception e) {
             status = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(status);
@@ -67,12 +77,16 @@ public class ClassController {
     @PostMapping("/add-subject")
     public ResponseEntity<Classes> addSubjectToClass(@RequestParam(value = "id") String classId, @RequestBody String subjectId) {
         HttpStatus status = HttpStatus.OK;
-        Classes c = null;
+        Classes c;
         if (classId == null) {
             status = HttpStatus.BAD_REQUEST;
         }
         try {
-            c = classesService.addSubjectByIdToClass(Long.valueOf(classId), Long.valueOf(subjectId));
+            Class aClass = null;
+            if (classId != null) {
+                aClass = classService.getClassByClassId(Long.valueOf(classId));
+            }
+            c = classesService.addSubjectByIdToClass(aClass, Long.valueOf(subjectId));
         } catch (Exception e) {
             status = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(status);

@@ -2,6 +2,7 @@ package com.example.ednevnik.configuration;
 
 import com.example.ednevnik.security.JWTAuthenticationFilter;
 import com.example.ednevnik.security.JWTAuthorizationFilter;
+import com.example.ednevnik.service.teacher.TeacherService;
 import com.example.ednevnik.service.user.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,11 +24,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final ApplicationProperties applicationProperties;
     private final UserDetailsServiceImpl userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final TeacherService teacherService;
 
-    public SecurityConfiguration(ApplicationProperties applicationProperties, UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public SecurityConfiguration(ApplicationProperties applicationProperties, UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, TeacherService teacherService) {
         this.applicationProperties = applicationProperties;
         this.userDetailsService = userDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.teacherService = teacherService;
     }
 
 
@@ -43,7 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), applicationProperties))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager(), applicationProperties))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), applicationProperties, teacherService))
                 // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

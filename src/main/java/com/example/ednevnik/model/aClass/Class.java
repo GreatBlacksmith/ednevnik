@@ -1,6 +1,7 @@
 package com.example.ednevnik.model.aClass;
 
 import com.example.ednevnik.model.codebook.ClassType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ public class Class {
 
     @Id
     @Setter(AccessLevel.NONE)
+    @JsonIgnore
     private ObjectId id;
 
     private Long classId;

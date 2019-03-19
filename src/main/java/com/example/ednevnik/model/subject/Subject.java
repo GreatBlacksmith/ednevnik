@@ -2,6 +2,7 @@ package com.example.ednevnik.model.subject;
 
 import com.example.ednevnik.model.codebook.ClassType;
 import com.example.ednevnik.model.codebook.SubjectType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class Subject implements Serializable {
 
     @Id
     @Setter(AccessLevel.NONE)
+    @JsonIgnore
     private ObjectId id;
 
     private Long subjectId;

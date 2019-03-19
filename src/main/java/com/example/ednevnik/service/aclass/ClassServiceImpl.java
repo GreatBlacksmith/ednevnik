@@ -11,6 +11,8 @@ import com.example.ednevnik.service.counterSequence.SequenceKeys;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ClassServiceImpl extends BaseService implements ClassService {
 
@@ -44,7 +46,12 @@ public class ClassServiceImpl extends BaseService implements ClassService {
         return savedClass;
     }
 
-//    @Override
+    @Override
+    public List<Class> getClassesByTeacherNumber(Long teacherNumber) {
+        return repository.findAllByTeacherNumber(teacherNumber);
+    }
+
+    //    @Override
 //    public void insertNewClass() {
 //        Class aClass = new Class();
 //        aClass.setClassType(ClassType.DRUGI);

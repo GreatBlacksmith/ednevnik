@@ -17,4 +17,12 @@ public enum SubjectType {
         return Arrays.stream(SubjectType.values()).filter(type -> type != null && type.code.equals(code)).findFirst()
                 .orElse(null);
     }
+
+    public Long getCode() {
+        return code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

@@ -2,6 +2,7 @@ package com.example.ednevnik.model.teacher;
 
 import com.example.ednevnik.model.codebook.ClassType;
 import com.example.ednevnik.model.user.ApplicationUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,9 +31,11 @@ public class Teacher extends ApplicationUser {
     List<ClassType> classTypes = new ArrayList<>();
 
     @CreatedDate
+    @JsonIgnore
     public LocalDateTime createDate;
 
     @LastModifiedDate
+    @JsonIgnore
     public LocalDateTime lastModifiedDate;
 
 }

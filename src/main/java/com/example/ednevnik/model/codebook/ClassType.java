@@ -18,4 +18,12 @@ public enum ClassType {
         return Arrays.stream(ClassType.values()).filter(type -> type != null && type.code.equals(code)).findFirst()
                 .orElse(null);
     }
+
+    public Long getCode() {
+        return code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

@@ -8,8 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "counterSequence")
 public class CounterSequence {
 
-    public static final String OUTGOING_TRANSACTION_RESPONSE_ID = "outgoingTransactionResponseId";
-
     @Id
     private String id;
 

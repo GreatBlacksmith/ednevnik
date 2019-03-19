@@ -60,12 +60,11 @@ public class ClassController {
         Classes c;
         if (classId == null) {
             status = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<>(status);
         }
         try {
-            Class aClass = null;
-            if (classId != null) {
-                aClass = classService.getClassByClassId(Long.valueOf(classId));
-            }
+            Class aClass;
+            aClass = classService.getClassByClassId(Long.valueOf(classId));
             c = classesService.addStudentByIdToClass(aClass, Long.valueOf(studentId));
         } catch (Exception e) {
             status = HttpStatus.BAD_REQUEST;
@@ -80,12 +79,11 @@ public class ClassController {
         Classes c;
         if (classId == null) {
             status = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<>(status);
         }
         try {
-            Class aClass = null;
-            if (classId != null) {
-                aClass = classService.getClassByClassId(Long.valueOf(classId));
-            }
+            Class aClass;
+            aClass = classService.getClassByClassId(Long.valueOf(classId));
             c = classesService.addSubjectByIdToClass(aClass, Long.valueOf(subjectId));
         } catch (Exception e) {
             status = HttpStatus.BAD_REQUEST;

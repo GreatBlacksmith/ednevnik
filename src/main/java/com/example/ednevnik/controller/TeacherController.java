@@ -4,10 +4,10 @@ import com.example.ednevnik.model.aClass.Class;
 import com.example.ednevnik.model.teacher.Teacher;
 import com.example.ednevnik.service.aclass.ClassService;
 import com.example.ednevnik.service.teacher.TeacherService;
+import com.example.ednevnik.util.UserUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,19 +25,19 @@ public class TeacherController {
         this.classService = classService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Teacher> getTeacherById(@PathVariable(value = "id") Long teacherId) {
+    @GetMapping()
+    public ResponseEntity<Teacher> getTeacherById() {
 
-        Teacher teacher = teacherService.getTeacherById(teacherId);
+        Teacher teacher = teacherService.getTeacherById(UserUtil.getTeacherNumber());
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(teacher, status);
 
     }
 
-    @GetMapping("/{id}/classes")
-    public ResponseEntity<List<Class>> getClassesForTeacher(@PathVariable(value = "id") Long teacherNumber) {
+    @GetMapping("/classes")
+    public ResponseEntity<List<Class>> getClassesForTeacher() {
 
-        List<Class> classesByTeacherNumber = classService.getClassesByTeacherNumber(teacherNumber);
+        List<Class> classesByTeacherNumber = classService.getClassesByTeacherNumber(UserUtil.getTeacherNumber());
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(classesByTeacherNumber, status);
     }
@@ -47,5 +47,4 @@ public class TeacherController {
 
         teacherService.insertTeacher();
     }
-
 }

@@ -2,7 +2,9 @@ package com.example.ednevnik.security;
 
 import com.auth0.jwt.JWT;
 import com.example.ednevnik.configuration.ApplicationProperties;
+import com.example.ednevnik.model.teacher.Teacher;
 import com.example.ednevnik.model.user.ApplicationUser;
+import com.example.ednevnik.service.teacher.TeacherService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,10 +26,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final ApplicationProperties appProperties;
     private final AuthenticationManager authenticationManager;
+    private final TeacherService teacherService;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, ApplicationProperties appProperties) {
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, ApplicationProperties appProperties, TeacherService teacherService) {
         this.authenticationManager = authenticationManager;
         this.appProperties = appProperties;
+        this.teacherService = teacherService;
     }
 
     @Override
@@ -57,9 +61,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         long now = (new Date()).getTime();
         Date validity = new Date(now + Long.valueOf(appProperties.getTokenValidity()));
 
+        Teacher teacher = teacherService.getTeacherByUsername(((User) auth.getPrincipal()).getUsername());
 
         String token = JWT.create()
                 .withSubject(((User) auth.getPrincipal()).getUsername())
+                .withClaim("teacherNumber", teacher.getTeacherNumber())
                 .withExpiresAt(validity)
                 .sign(HMAC512(appProperties.getJwtSecret().getBytes()));
         res.addHeader(appProperties.getTokenHeader(), appProperties.getTokenPrefix() + token);

@@ -2,6 +2,7 @@ package com.example.ednevnik.model.student;
 
 import com.example.ednevnik.model.aClass.Class;
 import com.example.ednevnik.model.codebook.ClassType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Student implements Serializable {
 
     @Id
     @Setter(AccessLevel.NONE)
+    @JsonIgnore
     ObjectId id;
 
     Long studentId;

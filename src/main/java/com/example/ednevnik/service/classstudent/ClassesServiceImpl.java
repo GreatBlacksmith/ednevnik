@@ -55,6 +55,8 @@ public class ClassesServiceImpl implements ClassesService {
         studentService.saveStudent(student);
         Classes classes = repository.findOneByAClass(aClass);
 
+        //TODO provjerit da classes nije null
+
         if (classes.getStudents() == null) {
             classes.setStudents(new ArrayList<>());
         }

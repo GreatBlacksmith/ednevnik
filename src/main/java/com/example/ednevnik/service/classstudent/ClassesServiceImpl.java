@@ -27,6 +27,11 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public List<Student> getStudentsForClassById(Class aClass) {
+        Classes classesForClass = repository.findOneByAClass(aClass);
+
+        if (classesForClass == null)
+            return null;
+
         return repository.findOneByAClass(aClass).getStudents();
     }
 

@@ -36,7 +36,6 @@ public class Student implements Serializable {
 
     @DBRef
     Class aCLass;
-    //List<StudentSubject> subjects;
 
     @CreatedDate
     public LocalDateTime createDate;

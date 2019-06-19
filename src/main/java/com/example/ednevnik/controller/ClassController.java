@@ -9,6 +9,7 @@ import com.example.ednevnik.service.aclass.ClassService;
 import com.example.ednevnik.service.classstudent.ClassesService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +41,9 @@ public class ClassController {
         }
         List<Student> studentsForClass = classesService.getStudentsForClassById(aClass);
         HttpStatus status = HttpStatus.OK;
+        if (CollectionUtils.isEmpty(studentsForClass)) {
+            status = HttpStatus.BAD_REQUEST;
+        }
         return new ResponseEntity<>(studentsForClass, status);
     }
 

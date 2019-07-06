@@ -72,7 +72,7 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public Classes addSubjectByIdToClass(Class aClass, Long subjectId) throws Exception {
-        Subject subject = subjectService.findOneById(subjectId);
+        Subject subject = subjectService.findOneBySubjectId(subjectId);
 
         if (aClass == null || subject == null) {
             throw new Exception("Dodat custom exception");

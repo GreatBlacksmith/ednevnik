@@ -56,8 +56,8 @@ public class SubjectServiceImpl extends BaseService implements SubjectService {
     }
 
     @Override
-    public Subject findOneById(Long subjectId) {
-        LOGGER.info("Called findOneById() for subject with id: {}", subjectId);
+    public Subject findOneBySubjectId(Long subjectId) {
+        LOGGER.info("Called findOneBySubjectId() for subject with id: {}", subjectId);
         return subjectRepository.findOneBySubjectId(subjectId);
     }
 }

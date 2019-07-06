@@ -1,7 +1,8 @@
 package com.example.ednevnik.service.studentSubject;
 
-import com.example.ednevnik.model.StudentSubject;
 import com.example.ednevnik.model.student.Student;
+import com.example.ednevnik.model.studentSubject.StudentSubject;
+import com.example.ednevnik.model.studentSubject.StudentSubjectDto;
 import com.example.ednevnik.model.subject.Subject;
 import com.example.ednevnik.model.subject.SubjectDto;
 import com.example.ednevnik.repository.StudentSubjectRepository;
@@ -42,7 +43,7 @@ public class StudentSubjectServiceImpl extends BaseService implements StudentSub
         Student student = studentService.findOneByStudentId(studentId);
 
         subjectIds.forEach(aLong -> {
-            Subject subject = subjectService.findOneById(aLong);
+            Subject subject = subjectService.findOneBySubjectId(aLong);
             StudentSubject studentSubject = new StudentSubject();
             studentSubject.setStudent(student);
             studentSubject.setSubject(subject);
@@ -83,5 +84,27 @@ public class StudentSubjectServiceImpl extends BaseService implements StudentSub
 
         return availableSubjectsForStudent;
 
+    }
+
+    @Override
+    public StudentSubjectDto getStudentSubjectByStudentIdAndSubjectId(Long studentId, Long subjectId) {
+
+        LOGGER.info("Called getStudentSubjectByStudentIdAndSubjectId for studentId: {}, and subjectId: {}", studentId, subjectId);
+
+        Student student = studentService.findOneByStudentId(studentId);
+        Subject subject = subjectService.findOneBySubjectId(subjectId);
+
+        StudentSubject studentSubject = repository.findAllByStudent_IdAndSubject_Id(student.getId(), subject.getId());
+
+        if (studentSubject == null) {
+            return null;
+        }
+
+        StudentSubjectDto studentSubjectDto = mapEntityToDTO(studentSubject, StudentSubjectDto.class);
+
+        studentSubjectDto.setStudentId(student.getStudentId());
+        studentSubjectDto.setSubjectId(subject.getSubjectId());
+
+        return studentSubjectDto;
     }
 }

@@ -34,7 +34,7 @@ public class SubjectController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Subject> getSubject(@PathVariable(value = "id") Long subjectId) {
-        Subject subject = subjectService.findOneById(subjectId);
+        Subject subject = subjectService.findOneBySubjectId(subjectId);
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(subject, status);
     }

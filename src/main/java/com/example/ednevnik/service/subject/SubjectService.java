@@ -14,5 +14,5 @@ public interface SubjectService {
 
     List<SubjectDto> getAllByClassType(ClassType classType);
 
-    Subject findOneById(Long subjectId);
+    Subject findOneBySubjectId(Long subjectId);
 }

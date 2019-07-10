@@ -1,5 +1,6 @@
 package com.example.ednevnik.service.studentSubject;
 
+import com.example.ednevnik.model.aClass.Class;
 import com.example.ednevnik.model.student.Student;
 import com.example.ednevnik.model.studentSubject.StudentSubject;
 import com.example.ednevnik.model.studentSubject.StudentSubjectDto;
@@ -7,6 +8,7 @@ import com.example.ednevnik.model.subject.Subject;
 import com.example.ednevnik.model.subject.SubjectDto;
 import com.example.ednevnik.repository.StudentSubjectRepository;
 import com.example.ednevnik.service.BaseService;
+import com.example.ednevnik.service.classstudent.ClassesService;
 import com.example.ednevnik.service.student.StudentService;
 import com.example.ednevnik.service.subject.SubjectService;
 import org.modelmapper.ModelMapper;
@@ -24,12 +26,14 @@ public class StudentSubjectServiceImpl extends BaseService implements StudentSub
     private final StudentSubjectRepository repository;
     private final StudentService studentService;
     private final SubjectService subjectService;
+    private final ClassesService classesService;
 
-    public StudentSubjectServiceImpl(ModelMapper modelMapper, StudentSubjectRepository repository, StudentService studentService, SubjectService subjectService) {
+    public StudentSubjectServiceImpl(ModelMapper modelMapper, StudentSubjectRepository repository, StudentService studentService, SubjectService subjectService, ClassesService classesService) {
         super(modelMapper);
         this.repository = repository;
         this.studentService = studentService;
         this.subjectService = subjectService;
+        this.classesService = classesService;
     }
 
     public StudentSubject save(StudentSubject studentSubject) {
@@ -100,10 +104,15 @@ public class StudentSubjectServiceImpl extends BaseService implements StudentSub
             return null;
         }
 
+        Class aClass = classesService.getClassByStudentAndSubject(student, subject);
+
         StudentSubjectDto studentSubjectDto = mapEntityToDTO(studentSubject, StudentSubjectDto.class);
 
         studentSubjectDto.setStudentId(student.getStudentId());
+        studentSubjectDto.setStudentName(student.getFullName());
         studentSubjectDto.setSubjectId(subject.getSubjectId());
+        studentSubjectDto.setSubjectName(subject.getName());
+        studentSubjectDto.setClassName(aClass.getName());
 
         return studentSubjectDto;
     }

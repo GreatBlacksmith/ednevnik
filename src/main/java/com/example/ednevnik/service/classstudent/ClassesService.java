@@ -20,4 +20,6 @@ public interface ClassesService {
     Classes addSubjectByIdToClass(Class aClass, Long subjectId) throws Exception;
 
     Classes saveNewClassesForClass(Class aClass);
+
+    Class getClassByStudentAndSubject(Student student, Subject subject);
 }

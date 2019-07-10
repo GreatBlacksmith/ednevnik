@@ -1,5 +1,6 @@
 package com.example.ednevnik.model.studentSubject;
 
+import com.example.ednevnik.model.Grade;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,10 +12,14 @@ import java.util.List;
 public class StudentSubjectDto {
 
     Long studentId;
+    String studentName;
 
     Long subjectId;
+    String subjectName;
 
-    List<Integer> grades = new ArrayList<>();
+    String className;
+
+    List<Grade> grades = new ArrayList<>();
 
     Double average;
 }

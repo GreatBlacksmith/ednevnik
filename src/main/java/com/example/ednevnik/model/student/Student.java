@@ -43,4 +43,8 @@ public class Student implements Serializable {
     @LastModifiedDate
     public LocalDateTime lastModifiedDate;
 
+    public String getFullName() {
+        return name + " " + lastName;
+    }
+
 }

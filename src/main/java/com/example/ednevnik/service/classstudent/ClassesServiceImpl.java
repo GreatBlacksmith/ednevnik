@@ -93,4 +93,12 @@ public class ClassesServiceImpl implements ClassesService {
         classes.setAClass(aClass);
         return repository.save(classes);
     }
+
+    @Override
+    public Class getClassByStudentAndSubject(Student student, Subject subject) {
+
+        Classes classes = repository.findFirstByStudentsContainsAndSubjectsContains(student, subject);
+        Classes classes2 = repository.findFirstByStudentsContainsAndSubjectsContains(student.getId(), subject.getId());
+        return classes.getAClass();
+    }
 }

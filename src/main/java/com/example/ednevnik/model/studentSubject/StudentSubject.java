@@ -39,4 +39,7 @@ public class StudentSubject {
     List<Grade> grades = new ArrayList<>();
 
     Double average;
+
+    @DBRef
+    Class aClass;
 }

@@ -1,9 +1,11 @@
 package com.example.ednevnik.service.studentSubject;
 
+import com.example.ednevnik.model.Grade;
 import com.example.ednevnik.model.aClass.Class;
 import com.example.ednevnik.model.student.Student;
 import com.example.ednevnik.model.studentSubject.StudentSubject;
 import com.example.ednevnik.model.studentSubject.StudentSubjectDto;
+import com.example.ednevnik.model.studentSubject.StudentSubjectRequest;
 import com.example.ednevnik.model.subject.Subject;
 import com.example.ednevnik.model.subject.SubjectDto;
 import com.example.ednevnik.repository.StudentSubjectRepository;
@@ -16,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -91,18 +94,46 @@ public class StudentSubjectServiceImpl extends BaseService implements StudentSub
     }
 
     @Override
-    public StudentSubjectDto getStudentSubjectByStudentIdAndSubjectId(Long studentId, Long subjectId) {
+    public StudentSubjectDto getStudentSubjectDtoByStudentIdAndSubjectId(Long studentId, Long subjectId) {
 
         LOGGER.info("Called getStudentSubjectByStudentIdAndSubjectId for studentId: {}, and subjectId: {}", studentId, subjectId);
 
-        Student student = studentService.findOneByStudentId(studentId);
-        Subject subject = subjectService.findOneBySubjectId(subjectId);
-
-        StudentSubject studentSubject = repository.findAllByStudent_IdAndSubject_Id(student.getId(), subject.getId());
+        StudentSubject studentSubject = getStudentSubjectByStudentIdAndSubjectId(studentId, subjectId);
 
         if (studentSubject == null) {
             return null;
         }
+
+        return mapToDto(studentSubject);
+    }
+
+    @Override
+    public StudentSubjectDto addGradeToStudentSubject(StudentSubjectRequest request) {
+        StudentSubject studentSubject = getStudentSubjectByStudentIdAndSubjectId(request.getStudentId(), request.getSubjectId());
+
+        if (studentSubject == null) {
+            return null;
+        }
+        Grade grade = new Grade();
+        grade.setType(request.getGradeType());
+        grade.setGrade(Integer.valueOf(request.getGrade()));
+        grade.setDateEarned(LocalDateTime.now());
+
+        studentSubject.getGrades().add(grade);
+
+        return mapToDto(repository.save(studentSubject));
+    }
+
+    private StudentSubject getStudentSubjectByStudentIdAndSubjectId(Long studentId, Long subjectId) {
+        Student student = studentService.findOneByStudentId(studentId);
+        Subject subject = subjectService.findOneBySubjectId(subjectId);
+
+        return repository.findAllByStudent_IdAndSubject_Id(student.getId(), subject.getId());
+    }
+
+    private StudentSubjectDto mapToDto(StudentSubject studentSubject) {
+        Student student = studentSubject.getStudent();
+        Subject subject = studentSubject.getSubject();
 
         Class aClass = classesService.getClassByStudentAndSubject(student, subject);
 

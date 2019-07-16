@@ -18,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -120,6 +122,12 @@ public class StudentSubjectServiceImpl extends BaseService implements StudentSub
         grade.setDateEarned(LocalDateTime.now());
 
         studentSubject.getGrades().add(grade);
+
+        Double average = (double) studentSubject.getGrades().stream().mapToInt(Grade::getGrade).sum() / studentSubject.getGrades().size();
+
+        double average2decSpots = new BigDecimal(average.toString()).setScale(2, RoundingMode.HALF_UP).doubleValue();
+
+        studentSubject.setAverage(average2decSpots);
 
         return mapToDto(repository.save(studentSubject));
     }

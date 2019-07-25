@@ -59,6 +59,16 @@ public class StudentController {
         return new ResponseEntity<>(true, status);
     }
 
+    @PostMapping("/{id}/add-subject")
+    public ResponseEntity<Boolean> addSubjectToStudent(@PathVariable(value = "id") Long studentId,
+                                                       @RequestParam(value = "subjectId") Long subjectId) {
+
+        studentSubjectService.saveSubjectToStudent(subjectId, studentId);
+
+        HttpStatus status = HttpStatus.OK;
+        return new ResponseEntity<>(true, status);
+    }
+
     @GetMapping("/{id}/available-subjects")
     public ResponseEntity<List<SubjectDto>> getAvailableSubjectsForStudent(@PathVariable(value = "id") Long studentId) {
 

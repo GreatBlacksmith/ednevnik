@@ -98,7 +98,6 @@ public class ClassesServiceImpl implements ClassesService {
     public Class getClassByStudentAndSubject(Student student, Subject subject) {
 
         Classes classes = repository.findFirstByStudentsContainsAndSubjectsContains(student, subject);
-        Classes classes2 = repository.findFirstByStudentsContainsAndSubjectsContains(student.getId(), subject.getId());
         return classes.getAClass();
     }
 }

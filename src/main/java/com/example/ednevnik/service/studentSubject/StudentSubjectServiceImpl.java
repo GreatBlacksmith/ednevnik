@@ -2,6 +2,7 @@ package com.example.ednevnik.service.studentSubject;
 
 import com.example.ednevnik.model.Grade;
 import com.example.ednevnik.model.aClass.Class;
+import com.example.ednevnik.model.codebook.ClassType;
 import com.example.ednevnik.model.student.Student;
 import com.example.ednevnik.model.studentSubject.StudentSubject;
 import com.example.ednevnik.model.studentSubject.StudentSubjectDto;
@@ -10,9 +11,11 @@ import com.example.ednevnik.model.subject.Subject;
 import com.example.ednevnik.model.subject.SubjectDto;
 import com.example.ednevnik.repository.StudentSubjectRepository;
 import com.example.ednevnik.service.BaseService;
+import com.example.ednevnik.service.aclass.ClassService;
 import com.example.ednevnik.service.classstudent.ClassesService;
 import com.example.ednevnik.service.student.StudentService;
 import com.example.ednevnik.service.subject.SubjectService;
+import com.example.ednevnik.util.UserUtil;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,13 +36,15 @@ public class StudentSubjectServiceImpl extends BaseService implements StudentSub
     private final StudentService studentService;
     private final SubjectService subjectService;
     private final ClassesService classesService;
+    private final ClassService classService;
 
-    public StudentSubjectServiceImpl(ModelMapper modelMapper, StudentSubjectRepository repository, StudentService studentService, SubjectService subjectService, ClassesService classesService) {
+    public StudentSubjectServiceImpl(ModelMapper modelMapper, StudentSubjectRepository repository, StudentService studentService, SubjectService subjectService, ClassesService classesService, ClassService classService) {
         super(modelMapper);
         this.repository = repository;
         this.studentService = studentService;
         this.subjectService = subjectService;
         this.classesService = classesService;
+        this.classService = classService;
     }
 
     public StudentSubject save(StudentSubject studentSubject) {
@@ -62,6 +68,21 @@ public class StudentSubjectServiceImpl extends BaseService implements StudentSub
     }
 
     @Override
+    public void saveSubjectToStudent(Long subjectId, Long studentId) {
+        LOGGER.info("Called saveSubjectsToStudent for studentId: {}, and subjectId: {}", studentId, subjectId);
+        Student student = studentService.findOneByStudentId(studentId);
+
+        Subject subject = subjectService.findOneBySubjectId(subjectId);
+        StudentSubject studentSubject = new StudentSubject();
+        studentSubject.setStudent(student);
+        studentSubject.setSubject(subject);
+        studentSubject.setTeacherNumber(UserUtil.getTeacherNumber());
+        studentSubject.setAClass(student.getACLass());
+
+        repository.save(studentSubject);
+    }
+
+    @Override
     public List<SubjectDto> getSubjectsForStudent(Long studentId) {
         LOGGER.info("Called getSubjectsForStudent() with studentId: {}", studentId);
 
@@ -73,9 +94,16 @@ public class StudentSubjectServiceImpl extends BaseService implements StudentSub
     }
 
     private SubjectDto mapSubjectToDto(Subject subject) {
-        SubjectDto subjectDto = mapEntityToDTO(subject, SubjectDto.class);
-        subjectDto.setSubjectTypeId(subject.getSubjectType().getCode());
-        subject.getClassTypes().forEach(classType -> subjectDto.getClassTypesId().add(classType.getCode()));
+
+        SubjectDto subjectDto = new SubjectDto();
+
+        if (subject != null) {
+            subjectDto = mapEntityToDTO(subject, SubjectDto.class);
+            subjectDto.setSubjectTypeId(subject.getSubjectType().getCode());
+            for (ClassType classType : subject.getClassTypes()) {
+                subjectDto.getClassTypesId().add(classType.getCode());
+            }
+        }
 
         return subjectDto;
     }
@@ -85,7 +113,13 @@ public class StudentSubjectServiceImpl extends BaseService implements StudentSub
         Student student = studentService.findOneByStudentId(studentId);
         List<StudentSubject> allByStudentId = repository.findAllByStudent_Id(student.getId());
 
-        List<Long> subjectIdsForStudent = allByStudentId.stream().map(studentSubject -> studentSubject.getSubject().getSubjectId()).collect(Collectors.toList());
+        List<Long> subjectIdsForStudent = new ArrayList<>();
+        for (StudentSubject studentSubject : allByStudentId) {
+            if (studentSubject.getSubject() != null) {
+                Long subjectId = studentSubject.getSubject().getSubjectId();
+                subjectIdsForStudent.add(subjectId);
+            }
+        }
 
         List<SubjectDto> allByClassType = subjectService.getAllByClassType(student.getClassType());
 

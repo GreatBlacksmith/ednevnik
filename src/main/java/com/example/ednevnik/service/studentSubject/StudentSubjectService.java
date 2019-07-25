@@ -10,6 +10,8 @@ public interface StudentSubjectService {
 
     void saveSubjectsToStudent(List<Long> subjectIds, Long studentId);
 
+    void saveSubjectToStudent(Long subjectId, Long studentId);
+
     List<SubjectDto> getSubjectsForStudent(Long studentId);
 
     List<SubjectDto> getAvailableSubjectsForStudent(Long studentId);

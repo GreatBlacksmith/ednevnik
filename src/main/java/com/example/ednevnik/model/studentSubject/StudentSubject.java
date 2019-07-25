@@ -1,6 +1,7 @@
 package com.example.ednevnik.model.studentSubject;
 
 import com.example.ednevnik.model.Grade;
+import com.example.ednevnik.model.aClass.Class;
 import com.example.ednevnik.model.student.Student;
 import com.example.ednevnik.model.subject.Subject;
 import com.fasterxml.jackson.annotation.JsonIgnore;

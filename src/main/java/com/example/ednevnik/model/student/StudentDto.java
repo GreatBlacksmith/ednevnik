@@ -12,4 +12,5 @@ public class StudentDto {
     String lastName;
     Long studentNumber;
     Long classTypeId;
+    Long classId;
 }

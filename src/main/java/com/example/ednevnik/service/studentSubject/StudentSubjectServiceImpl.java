@@ -79,6 +79,12 @@ public class StudentSubjectServiceImpl extends BaseService implements StudentSub
         studentSubject.setTeacherNumber(UserUtil.getTeacherNumber());
         studentSubject.setAClass(student.getACLass());
 
+        try {
+            classesService.addSubjectByIdToClass(student.getACLass(), subjectId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         repository.save(studentSubject);
     }
 

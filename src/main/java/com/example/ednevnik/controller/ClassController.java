@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/class")
@@ -34,12 +34,26 @@ public class ClassController {
     }
 
     @GetMapping("/{id}/students")
-    public ResponseEntity<List<Student>> getStudentsForClass(@PathVariable(value = "id") Long classId) {
+    public ResponseEntity<Set<Student>> getStudentsForClass(@PathVariable(value = "id") Long classId) {
         Class aClass = null;
         if (classId != null) {
             aClass = classService.getClassByClassId(classId);
         }
-        List<Student> studentsForClass = classesService.getStudentsForClassById(aClass);
+        Set<Student> studentsForClass = classesService.getStudentsForClassById(aClass);
+        HttpStatus status = HttpStatus.OK;
+        if (CollectionUtils.isEmpty(studentsForClass)) {
+            status = HttpStatus.BAD_REQUEST;
+        }
+        return new ResponseEntity<>(studentsForClass, status);
+    }
+
+    @GetMapping("/{id}/available-students")
+    public ResponseEntity<Set<Student>> getAvailableStudentsForClass(@PathVariable(value = "id") Long classId) {
+        Class aClass = null;
+        if (classId != null) {
+            aClass = classService.getClassByClassId(classId);
+        }
+        Set<Student> studentsForClass = classesService.getAvailableStudentsForClassById(aClass);
         HttpStatus status = HttpStatus.OK;
         if (CollectionUtils.isEmpty(studentsForClass)) {
             status = HttpStatus.BAD_REQUEST;
@@ -48,18 +62,18 @@ public class ClassController {
     }
 
     @GetMapping("/{id}/subjects")
-    public ResponseEntity<List<Subject>> getSubjectsForClass(@PathVariable(value = "id") Long classId) {
+    public ResponseEntity<Set<Subject>> getSubjectsForClass(@PathVariable(value = "id") Long classId) {
         Class aClass = null;
         if (classId != null) {
             aClass = classService.getClassByClassId(classId);
         }
-        List<Subject> subjectsForClass = classesService.getSubjectsForClassById(aClass);
+        Set<Subject> subjectsForClass = classesService.getSubjectsForClassById(aClass);
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(subjectsForClass, status);
     }
 
-    @PostMapping("/add-student")
-    public ResponseEntity<Classes> addStudentToClass(@RequestParam(value = "id") String classId, @RequestBody String studentId) {
+    @PostMapping("{id}/add-student")
+    public ResponseEntity<Classes> addStudentToClass(@PathVariable(value = "id") String classId, @RequestParam(value = "studentId") Long studentId) {
         HttpStatus status = HttpStatus.OK;
         Classes c;
         if (classId == null) {
@@ -69,7 +83,7 @@ public class ClassController {
         try {
             Class aClass;
             aClass = classService.getClassByClassId(Long.valueOf(classId));
-            c = classesService.addStudentByIdToClass(aClass, Long.valueOf(studentId));
+            c = classesService.addStudentByIdToClass(aClass, studentId);
         } catch (Exception e) {
             status = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<>(status);

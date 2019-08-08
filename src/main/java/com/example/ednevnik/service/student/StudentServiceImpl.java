@@ -1,5 +1,6 @@
 package com.example.ednevnik.service.student;
 
+import com.example.ednevnik.model.aClass.Class;
 import com.example.ednevnik.model.codebook.ClassType;
 import com.example.ednevnik.model.student.Student;
 import com.example.ednevnik.model.student.StudentDto;
@@ -13,7 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class StudentServiceImpl extends BaseService implements StudentService {
@@ -47,9 +49,15 @@ public class StudentServiceImpl extends BaseService implements StudentService {
 
 
     @Override
-    public List<Student> getAllStudents() {
+    public Set<Student> getAllStudents() {
         LOGGER.info("Called getAllStudents()");
-        return studentRepository.findAll();
+        return new HashSet<>(studentRepository.findAll());
+    }
+
+    @Override
+    public Set<Student> getAllStudentsForClass(Class aClass) {
+        LOGGER.info("Called getAllStudentsForClass() with classId: ", aClass.getClassId());
+        return studentRepository.findAllByACLass(aClass);
     }
 
     @Override

@@ -5,13 +5,15 @@ import com.example.ednevnik.model.classes.Classes;
 import com.example.ednevnik.model.student.Student;
 import com.example.ednevnik.model.subject.Subject;
 
-import java.util.List;
+import java.util.Set;
 
 public interface ClassesService {
 
-    List<Student> getStudentsForClassById(Class aClass);
+    Set<Student> getStudentsForClassById(Class aClass);
 
-    List<Subject> getSubjectsForClassById(Class aClass);
+    Set<Student> getAvailableStudentsForClassById(Class aClass);
+
+    Set<Subject> getSubjectsForClassById(Class aClass);
 
     void addStudentsToClass(Class aClass);
 

@@ -12,7 +12,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
+import java.util.Set;
 
 @Document
 @Data
@@ -27,8 +27,8 @@ public class Classes {
     private Class aClass;
 
     @DBRef
-    private List<Student> students;
+    private Set<Student> students;
 
     @DBRef
-    private List<Subject> subjects;
+    private Set<Subject> subjects;
 }

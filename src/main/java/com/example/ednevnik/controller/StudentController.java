@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/student")
@@ -27,8 +28,8 @@ public class StudentController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Student>> getAll() {
-        List<Student> allStudents = studentService.getAllStudents();
+    public ResponseEntity<Set<Student>> getAll() {
+        Set<Student> allStudents = studentService.getAllStudents();
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(allStudents, status);
     }
@@ -81,6 +82,7 @@ public class StudentController {
     @GetMapping("/{id}/subjects")
     public ResponseEntity<List<SubjectDto>> getSubjectsForStudent(@PathVariable(value = "id") Long studentId) {
 
+        //TODO add class to!
         List<SubjectDto> subjectsForStudent = studentSubjectService.getSubjectsForStudent(studentId);
 
         HttpStatus status = HttpStatus.OK;

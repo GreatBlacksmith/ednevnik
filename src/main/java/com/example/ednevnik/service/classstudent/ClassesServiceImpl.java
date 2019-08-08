@@ -9,8 +9,8 @@ import com.example.ednevnik.service.student.StudentService;
 import com.example.ednevnik.service.subject.SubjectService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class ClassesServiceImpl implements ClassesService {
@@ -26,7 +26,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public List<Student> getStudentsForClassById(Class aClass) {
+    public Set<Student> getStudentsForClassById(Class aClass) {
         Classes classesForClass = repository.findOneByAClass(aClass);
 
         if (classesForClass == null)
@@ -36,7 +36,23 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public List<Subject> getSubjectsForClassById(Class aClass) {
+    public Set<Student> getAvailableStudentsForClassById(Class aClass) {
+        Set<Student> students = studentService.getAllStudentsForClass(aClass);
+
+        Classes oneByAClass = repository.findOneByAClass(aClass);
+
+        if (oneByAClass == null || students == null) {
+            return null;
+        }
+        Set<Student> studentsAlreadyInClass = oneByAClass.getStudents();
+
+        students.removeAll(studentsAlreadyInClass);
+
+        return students;
+    }
+
+    @Override
+    public Set<Subject> getSubjectsForClassById(Class aClass) {
         return repository.findOneByAClass(aClass).getSubjects();
     }
 
@@ -63,7 +79,7 @@ public class ClassesServiceImpl implements ClassesService {
         //TODO provjerit da classes nije null
 
         if (classes.getStudents() == null) {
-            classes.setStudents(new ArrayList<>());
+            classes.setStudents(new HashSet<>());
         }
         classes.getStudents().add(student);
 
@@ -80,7 +96,7 @@ public class ClassesServiceImpl implements ClassesService {
 
         Classes classes = repository.findOneByAClass(aClass);
         if (classes.getSubjects() == null) {
-            classes.setSubjects(new ArrayList<>());
+            classes.setSubjects(new HashSet<>());
         }
         classes.getSubjects().add(subject);
 
